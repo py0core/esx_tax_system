@@ -1,0 +1,30 @@
+--[[
+TAX SYSTEM BY DANID18 WIP
+
+DO NOT CHANGE THIS FILE IF YOU DONT KNOW HOW TO CODE!
+
+TO CHANGE THE PRICE USE CONFIG FILE.
+
+  ]]
+
+ESX = nil
+TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+
+RegisterServerEvent('esx_tax_system:takeTax')
+AddEventHandler('esx_tax_system:takeTax', function()
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(source)
+	local taxCorrent = Config.taxPrice
+	
+	-- Can citizen pay tax?
+	if (taxCorrent ~= nil) then
+		if xPlayer.getMoney() >= taxCorrent then
+			xPlayer.removeMoney(taxCorrent)
+			xPlayer.showNotification('Tax: ' .. ESX.Math.GroupDigits(taxCorrent) .. "$.")
+		
+		else
+			local missingMoney = taxCorrent - xPlayer.getMoney()
+			xPlayer.showNotification('You need more ' .. ESX.Math.GroupDigits(missingMoney) .. "$" .. ' To pay the buy tax.')
+		end
+	end
+end)
